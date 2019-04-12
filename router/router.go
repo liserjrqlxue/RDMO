@@ -74,7 +74,7 @@ func UpdateMO(w http.ResponseWriter, r *http.Request) {
 	simple_util.CheckErr(err)
 
 	var Info Infos
-	Info.Title = "更新研发MO"
+	Info.Title = "更新MO"
 	Info.Token = createToken()
 
 	if r.Method == "POST" {
