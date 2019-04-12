@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/liserjrqlxue/RDMO/router"
 	"log"
 	"net/http"
 	"strings"
@@ -20,8 +21,8 @@ var StaticDir = make(map[string]string)
 
 func main() {
 	flag.Parse()
-	http.HandleFunc("/loadMO", loadMO)
-	http.HandleFunc("/updateMO", updateMO)
+	http.HandleFunc("/loadMO", router.LoadMO)
+	http.HandleFunc("/updateMO", router.UpdateMO)
 
 	StaticDir["/static"] = "static"
 	StaticDir["/public"] = "public"
@@ -37,7 +38,7 @@ func main() {
 					return
 				}
 			}
-			index(w, r)
+			router.Index(w, r)
 		},
 	)
 

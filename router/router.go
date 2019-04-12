@@ -1,4 +1,4 @@
-package main
+package router
 
 import (
 	"crypto/md5"
@@ -7,6 +7,7 @@ import (
 	"github.com/liserjrqlxue/simple-util"
 	"html/template"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -42,7 +43,9 @@ func createToken() string {
 	return md5sum(strconv.FormatInt(time.Now().Unix(), 10))
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
+func Index(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Path, " method:", r.Method)
+
 	t, err := template.ParseFiles(templatePath+"header.html", templatePath+"footer.html", templatePath+"index.html")
 	simple_util.CheckErr(err)
 
@@ -52,7 +55,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 	t.ExecuteTemplate(w, "index", Info)
 }
 
-func loadMO(w http.ResponseWriter, r *http.Request) {
+func LoadMO(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Path, " method:", r.Method)
+
 	t, err := template.ParseFiles(templatePath+"header.html", templatePath+"footer.html", templatePath+"loadMO.html")
 	simple_util.CheckErr(err)
 
@@ -62,7 +67,9 @@ func loadMO(w http.ResponseWriter, r *http.Request) {
 	t.ExecuteTemplate(w, "loadMO", Info)
 }
 
-func updateMO(w http.ResponseWriter, r *http.Request) {
+func UpdateMO(w http.ResponseWriter, r *http.Request) {
+	log.Println(r.URL.Path, " method:", r.Method)
+
 	t, err := template.ParseFiles(templatePath+"header.html", templatePath+"footer.html", templatePath+"updateMO.html")
 	simple_util.CheckErr(err)
 
@@ -70,7 +77,6 @@ func updateMO(w http.ResponseWriter, r *http.Request) {
 	Info.Title = "更新研发MO"
 	Info.Token = createToken()
 
-	fmt.Println("method:", r.Method)
 	if r.Method == "POST" {
 		r.ParseMultipartForm(32 << 20)
 		file, handler, err := r.FormFile("uploadfile")
