@@ -88,7 +88,7 @@ func UpdateMO(w http.ResponseWriter, r *http.Request) {
 		defer f.Close()
 		_, err = io.Copy(f, file)
 		simple_util.CheckErr(err)
-		_, mapArray := simple_util.Sheet2MapArray("data"+pSep+handler.Filename, "Sheet1")
+		_, mapArray := simple_util.Sheet2MapArray("data"+pSep+handler.Filename, "研发领料")
 		var db = map[string][]map[string]string{
 			"data": mapArray,
 		}
