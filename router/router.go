@@ -52,7 +52,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	var Info Infos
 	Info.Title = "Home Page"
 	Info.Token = createToken()
-	t.ExecuteTemplate(w, "index", Info)
+	err = t.ExecuteTemplate(w, "index", Info)
+	if err != nil {
+		log.Print(err)
+	}
 }
 
 func LoadMO(w http.ResponseWriter, r *http.Request) {
@@ -64,7 +67,10 @@ func LoadMO(w http.ResponseWriter, r *http.Request) {
 	var Info Infos
 	Info.Title = "研发MO"
 	Info.Token = createToken()
-	t.ExecuteTemplate(w, "loadMO", Info)
+	err = t.ExecuteTemplate(w, "loadMO", Info)
+	if err != nil {
+		log.Print(err)
+	}
 }
 
 func UpdateMO(w http.ResponseWriter, r *http.Request) {
@@ -78,14 +84,18 @@ func UpdateMO(w http.ResponseWriter, r *http.Request) {
 	Info.Token = createToken()
 
 	if r.Method == "POST" {
-		r.ParseMultipartForm(32 << 20)
+		err = r.ParseMultipartForm(32 << 20)
+		if err != nil {
+			log.Print(err)
+			return
+		}
 		file, handler, err := r.FormFile("uploadfile")
 		simple_util.CheckErr(err)
-		defer file.Close()
+		defer simple_util.DeferClose(file)
 		//Info.Message=fmt.Sprint(handler.Header)
 		f, err := os.Create("data" + pSep + handler.Filename)
 		simple_util.CheckErr(err)
-		defer f.Close()
+		defer simple_util.DeferClose(f)
 		_, err = io.Copy(f, file)
 		simple_util.CheckErr(err)
 		_, mapArray := simple_util.Sheet2MapArray("data"+pSep+handler.Filename, "研发领料")
@@ -94,8 +104,8 @@ func UpdateMO(w http.ResponseWriter, r *http.Request) {
 		}
 		jsonByte, err := json.MarshalIndent(db, "", "\t")
 		simple_util.CheckErr(err)
-		simple_util.Json2file(jsonByte, "public"+pSep+"MO.json")
+		simple_util.CheckErr(simple_util.Json2file(jsonByte, "public"+pSep+"MO.json"))
 		Info.Message = "update done!"
 	}
-	t.ExecuteTemplate(w, "updateMO", Info)
+	simple_util.CheckErr(t.ExecuteTemplate(w, "updateMO", Info))
 }
