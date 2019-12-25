@@ -2,16 +2,16 @@
 {{template "header" .}}
 <main>
     <div class="jumbotron text-center">
-        上传文件"研发MO.xlsx"更新：<a href="datatables" target="_blank">研发MO</a>
+        上传文件"研发MO.xlsx"更新：<a href="/loadMO" target="_blank">研发MO</a>
     </div>
     <div class="">
         <form enctype="multipart/form-data" action="/updateMO" method="post">
-            <input type="hidden" name="token" value="{{.Token}}"></input>
+            <input type="hidden" name="token" value="{{.Token}}"/>
             <input type="file" id="i-file" name="uploadfile" style="display:none" required="required"
                    onchange="$('#localtion').val($('#i-file').val());" >
             </input>
             <div class="input-group-append">
-                <input id="localtion" class="form-control" disabled="disabled"></input>
+                <input id="localtion" class="form-control" disabled="disabled"/>
                 <a type="button" id="i-check" class="btn"
                    onclick="$('#i-file').click();">
                     Browse
@@ -24,7 +24,7 @@
 <script src="/static/js/jquery-3.3.1.js"></script>
 <script>
     if({{.Message}}!=""){
-        console.log({{.Message}})
+        console.log({{.Message}});
         alert({{.Message}})
     }
 </script>
