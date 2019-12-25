@@ -62,10 +62,10 @@
         table.columns(0).search("MO").draw();
 
         $('#searchNo').on('keyup click',function() {
-            table.columns(0).search("^"+$('#searchNo').val().trim()+"$",true).draw()
+            table.columns([0]).search($('#searchNo').val().trim(),true).draw()
         });
         $('#searchName').on('keyup click',function() {
-            table.columns(1).search("^"+$('#searchName').val().trim()+"$",true).draw()
+            table.columns(1).search($('#searchName').val().trim(),true).draw()
         });
     });
 </script>
