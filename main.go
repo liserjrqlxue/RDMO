@@ -6,6 +6,7 @@ import (
 	"github.com/liserjrqlxue/RDMO/router"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -21,6 +22,7 @@ var StaticDir = make(map[string]string)
 
 func main() {
 	flag.Parse()
+	_ = os.Mkdir("data", 0755)
 	http.HandleFunc("/loadMO", router.LoadMO)
 	http.HandleFunc("/updateMO", router.UpdateMO)
 
