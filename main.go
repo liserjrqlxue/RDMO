@@ -3,11 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/liserjrqlxue/RDMO/router"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/liserjrqlxue/RDMO/router"
 )
 
 var (
@@ -44,9 +46,21 @@ func main() {
 		},
 	)
 
-	fmt.Printf("start http://localhost%v\n", *port)
+	fmt.Printf("start http://%v%v\n", GetOutboundIP(), *port)
 	err := http.ListenAndServe(*port, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// Get preferred outbound ip of this machine
+func GetOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+	return localAddr.IP
 }
